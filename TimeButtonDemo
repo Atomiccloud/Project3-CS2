@@ -51,9 +51,43 @@ public class TimeButtonDemo extends Application {
 		pane.setCenter(clock);
 
 		// handle button clicks with lambdas
+		btLeft.setOnMouseClicked(e -> clock.changeFormat12());
+        btRight.setOnMouseClicked(e -> clock.changeFormat24());
 
 		// handle keyboard presses with lambdas
+        pane.setOnKeyPressed(e -> {
+            switch (e.getCode()){
+                // If up arrow was pressed.
+                case UP:
+                    // Set the clock's color to red,
+                    clock.setTextFill(Color.RED);
+                    break;
+                // If down arrow was pressed,
+                case DOWN:
+                    // Set the text color to cyan.
+                    clock.setTextFill(Color.CYAN);
+                    break;
+                // If enter was pressed,
+                case ENTER:
+                    // Set the text color to black.
+                    clock.setTextFill(Color.BLACK);
+                    break;
+                // If left arrow was pressed,
+                case LEFT:
+                    // Change the clock's format to 12h.
+                    clock.changeFormat12();
+                    break;
+                // If right arrow was pressed,
+                case RIGHT:
+                    // Change the clock's format to 24h.
+                    clock.changeFormat24();
+                    break;
+                // If none of these keys were pressed, don't handle it.
+            }
+        });
 
+        
+        
 		return pane;
 	}
 
@@ -70,14 +104,15 @@ public class TimeButtonDemo extends Application {
 class DigitalClock extends Label {
 	private Timeline animation;
 	private Calendar time;
-	private Boolean usaTime = false;
-	SimpleDateFormat dateFormat = usaTime ? new SimpleDateFormat("hh:mm:ss a") : new SimpleDateFormat("HH:mm:ss");
+	SimpleDateFormat dateFormat =  new SimpleDateFormat("HH:mm:ss");
+
 
 	public DigitalClock() {
 		// get time and set text with lambda
 		Calendar calendar = new GregorianCalendar();
 
 		//change text font here
+		setFont(new Font("Arial", 30));
 
 		// set animation here
 		animation = new Timeline(new KeyFrame(Duration.seconds(0), e -> setText(dateFormat.format(Calendar.getInstance().getTime()))), new KeyFrame(Duration.seconds(1)));
